@@ -37,6 +37,7 @@ PATCHES=(
 	"${FILESDIR}/${P}-find-jsoncpp.patch"
 )
 
+# TODO: implement version 9999
 #EGIT_REPO_URI="https://github.com/BespokeSynth/BespokeSynth.git"
 #EGIT_SUBMODULES=(
 #	libs/JUCE
@@ -47,7 +48,7 @@ PATCHES=(
 #)
 
 S="${WORKDIR}/BespokeSynth-${PV}"
-D="/usr/share/bespokesynth"
+# D="/usr/share/bespokesynth"
 
 src_prepare() {
 	rmdir "${S}/libs/JUCE" || die
@@ -75,11 +76,6 @@ src_prepare() {
 	cmake_src_prepare
 }
 
-#cmake_src_prepare() {
-	#cd $S
-#	eapply_user
-#}
-
 src_configure() {
 	local mycmakeargs=(
 		"-DBESPOKE_SYSTEM_PYBIND11=TRUE"
@@ -92,11 +88,13 @@ src_configure() {
 }
 
 src_install() {
-	# dobin "${WORKDIR}/Source/BespokeSynth_artefacts/RelWithDebInfo/BespokeSynth"
-	dobin "Source/BespokeSynth_artefacts/RelWithDebInfo/BespokeSynth"
-	dodir /usr/share/bespokesyth/
+	# Copying the binary from build directory
+	# dobin "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/BespokeSynth"
 
-	# cp -R "${WORKDIR}/Source/BespokeSynth_artefacts/RelWithDebInfo/RelWithDebInfo" "${D}/" || die "Installation failed when copying files"
-	# cp -R "Source/BespokeSynth_artefacts/RelWithDebInfo/RelWithDebInfo" "${D}/" || die "Installation failed when copying files"
+	# Copy the rest of the build dir
+	# dodir /usr/share/bespokesyth/
+	# cp -R "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo" "${D}/" || die "Installation failed when copying files"
+
+	# When using cmake's default, the script just tries to install into the /tmp dir.
 	cmake_src_install
 }

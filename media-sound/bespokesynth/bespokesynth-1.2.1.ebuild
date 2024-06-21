@@ -89,12 +89,11 @@ src_configure() {
 
 src_install() {
 	# Copying the binary from build directory
-	# dobin "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/BespokeSynth"
+	dobin "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/BespokeSynth"
 
 	# Copy the rest of the build dir
-	# dodir /usr/share/bespokesyth/
-	# cp -R "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo" "${D}/" || die "Installation failed when copying files"
+	dodir /usr/share/bespokesyth/
+	insinto /usr/share/bespokesynth
+	doins -r "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/"
 
-	# When using cmake's default, the script just tries to install into the /tmp dir.
-	cmake_src_install
 }

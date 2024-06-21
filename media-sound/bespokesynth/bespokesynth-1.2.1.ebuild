@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 EAPI=8
 
-inherit cmake
+inherit cmake desktop
 
 DESCRIPTION="Software modular synth"
 HOMEPAGE="https://www.bespokesynth.com/"
@@ -48,7 +48,6 @@ PATCHES=(
 #)
 
 S="${WORKDIR}/BespokeSynth-${PV}"
-# D="/usr/share/bespokesynth"
 
 src_prepare() {
 	rmdir "${S}/libs/JUCE" || die
@@ -82,18 +81,36 @@ src_configure() {
 		"-DBESPOKE_SYSTEM_JSONCPP=TRUE"
 		"-DCMAKE_BUILD_TYPE=Release"
 		"-DCMAKE_INSTALL_PREFIX=/usr/share"
-
+		"-DCMAKE_SKIP_RPATH=ON"
 	)
 	cmake_src_configure
 }
 
 src_install() {
-	# Copying the binary from build directory
+	DESTDIR="/usr/share/bespokesynth"
+
+	# Install libraries
+	dolib.so "${WORKDIR}/BespokeSynth-${PV}_build/libs/freeverb/libfreeverb.so"
+	dolib.so "${WORKDIR}/BespokeSynth-${PV}_build/libs/oddsound-mts/liboddsound-mts.so"
+	dolib.so "${WORKDIR}/BespokeSynth-${PV}_build/libs/psmove/libpsmove.so"
+	dolib.so "${WORKDIR}/BespokeSynth-${PV}_build/libs/push2/libpush2.so"
+	dolib.so "${WORKDIR}/BespokeSynth-${PV}_build/libs/xwax/libxwax.so"
+	dolib.so "${WORKDIR}/BespokeSynth-${PV}_build/libs/nanovg/libnanovg.so"
+
+	# Create a new directory for bespoke to live in
+	dodir ${DESTDIR}
+	into ${DESTDIR}
+
+	# It seems the executable really wants to be where the resource directory is.
 	dobin "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/BespokeSynth"
 
-	# Copy the rest of the build dir
-	dodir /usr/share/bespokesyth/
-	insinto /usr/share/bespokesynth
-	doins -r "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/"
+	# Install auxilary files
+	insinto /usr/share/bespokesynth/bin
+	doins -r "${WORKDIR}/BespokeSynth-${PV}_build/Source/BespokeSynth_artefacts/RelWithDebInfo/resource"
 
+	dosym -r ${DESTDIR}/bin/BespokeSynth /usr/bin/BespokeSynth
+
+	# Adding icon and desktop settings
+        doicon -s 512 "${WORKDIR}/BespokeSynth-${PV}/bespoke_icon.png"
+        domenu "${WORKDIR}/BespokeSynth-${PV}/scripts/installer_linux/BespokeSynth.desktop"
 }

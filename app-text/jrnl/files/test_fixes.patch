@@ -1,0 +1,14 @@
+--- tests/lib/when_steps.py
++++ tests/lib/when_steps.py.b
+@@ -8,13 +8,6 @@
+ from pytest_bdd.parsers import parse
+ from pytest_bdd.parsers import re
+ 
+-# This is an undocumented and unsupported function:
+-# https://github.com/pytest-dev/pytest-bdd/issues/684
+-try:
+-    from pytest_bdd.compat import inject_fixture  # pytest_bdd 7.1.2 and later
+-except ImportError:
+-    from pytest_bdd.steps import inject_fixture  # pytest_bdd 7.1.1 and earlier
+-
+ from jrnl.main import run

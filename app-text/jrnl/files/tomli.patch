@@ -11,11 +11,3 @@ Patching out toml in favor for tomli as the latter is already included in the Ge
  from keyring import backend
  from keyring import errors
  from pytest import fixture
-
---- a/.build/allow_all_python_version.py
-+++ b/.build/allow_all_python_version.py
-@@ -1,4 +1,4 @@
--import tomli
-+import toml
- 
- pyproject = toml.load("pyproject.toml")

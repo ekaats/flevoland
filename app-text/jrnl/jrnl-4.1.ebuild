@@ -1,6 +1,6 @@
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 DISTUTILS_USE_PEP517=poetry
 
@@ -19,6 +19,8 @@ PATCHES="
 	${FILESDIR}/tomli.patch
 	${FILESDIR}/test_fixes.patch
 "
+
+
 DEPEND="
 	dev-python/rich
 	dev-python/colorama
@@ -26,7 +28,7 @@ DEPEND="
 	dev-python/keyring
 	dev-python/parsedatetime
 	dev-python/python-dateutil
-	dev-python/xdg
+	dev-python/pyxdg
 	dev-python/ruamel-yaml
 	dev-python/tzlocal
 	test? (

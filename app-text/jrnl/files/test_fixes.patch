@@ -1,14 +1,22 @@
---- tests/lib/when_steps.py
-+++ tests/lib/when_steps.py.b
-@@ -8,13 +8,6 @@
+--- a/tests/lib/when_steps.py
++++ b/tests/lib/when_steps.py
+@@ -7,7 +7,6 @@
+ from pytest_bdd import when
  from pytest_bdd.parsers import parse
  from pytest_bdd.parsers import re
+-from pytest_bdd.steps import inject_fixture
  
--# This is an undocumented and unsupported function:
--# https://github.com/pytest-dev/pytest-bdd/issues/684
--try:
--    from pytest_bdd.compat import inject_fixture  # pytest_bdd 7.1.2 and later
--except ImportError:
--    from pytest_bdd.steps import inject_fixture  # pytest_bdd 7.1.1 and earlier
--
  from jrnl.main import run
+ 
+@@ -37,11 +36,6 @@
+ 
+     set_keyring(keyring)
+ 
+-    # fixture injection (pytest-bdd >=6.0)
+-    inject_fixture(request, "command", command)
+-    inject_fixture(request, "input_method", input_method)
+-    inject_fixture(request, "all_input", all_input)
+-
+     cli_run = request.getfixturevalue("cli_run")
+ 
+     with ExitStack() as stack:

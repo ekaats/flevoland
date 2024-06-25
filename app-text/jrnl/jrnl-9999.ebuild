@@ -7,22 +7,19 @@ DISTUTILS_USE_PEP517=poetry
 inherit distutils-r1
 
 DESCRIPTION="Collect your thoughts and notes without leaving the command line"
-HOMEPAGE="jrnl.sh"
+HOMEPAGE="https://jrnl.sh"
 SRC_URI="https://github.com/jrnl-org/jrnl/archive/refs/heads/develop.tar.gz -> ${P}.tar.gz"
+
+S="${WORKDIR}/${PN}-develop"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="test"
 
-#PATCHES="
-#	${FILESDIR}/tomli.patch
-#"
-
-
-S="${WORKDIR}/${PN}-develop"
-
-
+PATCHES="
+	${FILESDIR}/tomli.patch
+"
 
 DEPEND="
 	dev-python/rich
@@ -37,11 +34,9 @@ DEPEND="
 	test? (
 		dev-python/pytest
 		dev-python/pytest-bdd
-		dev-python/pytest-clarity
 		dev-python/pytest-xdist
 		dev-python/tomli
 		)
 "
 RDEPEND="${DEPEND}"
-BDEPEND=""
 distutils_enable_tests pytest

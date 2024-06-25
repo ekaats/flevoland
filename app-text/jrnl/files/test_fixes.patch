@@ -1,22 +1,11 @@
 --- a/tests/lib/when_steps.py
 +++ b/tests/lib/when_steps.py
-@@ -7,7 +7,6 @@
+@@ -7,7 +7,7 @@
  from pytest_bdd import when
  from pytest_bdd.parsers import parse
  from pytest_bdd.parsers import re
 -from pytest_bdd.steps import inject_fixture
++from pytest_bdd.compat import inject_fixture
  
  from jrnl.main import run
- 
-@@ -37,11 +36,6 @@
- 
-     set_keyring(keyring)
- 
--    # fixture injection (pytest-bdd >=6.0)
--    inject_fixture(request, "command", command)
--    inject_fixture(request, "input_method", input_method)
--    inject_fixture(request, "all_input", all_input)
--
-     cli_run = request.getfixturevalue("cli_run")
- 
-     with ExitStack() as stack:
+

@@ -107,24 +107,24 @@ QA_PREBUILT="opt/${PN}/*"
 src_prepare() {
 	default
 
-	rm -v  "${S}"/help/ReferenceCardForMac.pdf || die
+	rm -v  "${S}"/help/ReferenceCard.pdf || die
 
-	rm -v "${S}"/plugins/python-ce/helpers/pydev/_pydevd_{bundle,frame_eval}/*{darwin,win32}* || die
+	rm -v "${S}"/plugins/python/helpers/pydev/_pydevd_{bundle,frame_eval}/*{darwin,win32}* || die
 
 	if ! use amd64; then
-		rm -v  "${S}"/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/attach_linux_amd64.so || die
+		rm -v  "${S}"/plugins/python/helpers/pydev/pydevd_attach_to_process/attach_linux_amd64.so || die
 		if [[ -d "${S}"/lib/async-profiler/ ]]; then
 			rm -v  "${S}"/lib/async-profiler/amd64/libasyncProfiler.so || die
 		fi
 	fi
 	if ! use arm64; then
-		rm -v  "${S}"/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/attach_linux_aarch64.so || die
+		rm -v  "${S}"/plugins/python/helpers/pydev/pydevd_attach_to_process/attach_linux_aarch64.so || die
 		if [[ -d "${S}"/lib/async-profiler/ ]]; then
 			rm -v  "${S}"/lib/async-profiler/aarch64/libasyncProfiler.so || die
 		fi
 	fi
 	if ! use x86; then
-		rm -v  "${S}"/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/attach_linux_x86.so || die
+		rm -v  "${S}"/plugins/python/helpers/pydev/pydevd_attach_to_process/attach_linux_x86.so || die
 	fi
 
 	sed -i \
@@ -175,10 +175,10 @@ src_install() {
 	insinto "${DIR}"
 	doins -r ./*
 
-	fperms 755 "${DIR}"/bin/{format.sh,fsnotifier,inspect.sh,jetbrains_client.sh,ltedit.sh,pycharm,pycharm.sh,restarter}
+	fperms 755 "${DIR}"/bin/{format.sh,fsnotifier,inspect.sh,jetbrains_client.sh,ltedit.sh,pycharm.sh,restarter}
 
 	if use bundled-jdk; then
-		fperms 755 "${DIR}/${JRE_DIR}"/bin/{java,javac,javadoc,jcmd,jdb,jfr,jhsdb,jinfo,jmap,jps,jrunscript,jstack,jstat,jwebserver,keytool,rmiregistry,serialver}
+		fperms 755 "${DIR}/${JRE_DIR}"/bin/{java,javac,javadoc,jcmd,jdb,jfr,jhsdb,jinfo,jmap,jps,jrunscript,jstack,jstat,keytool,rmiregistry,serialver}
 		fperms 755 "${DIR}"/"${JRE_DIR}"/lib/{cef_server,chrome-sandbox,jcef_helper,jexec,jspawnhelper}
 	fi
 
@@ -189,7 +189,7 @@ src_install() {
 		fperms 755 "${DIR}" "${DIR}"/bin/remote-dev-server{,.sh}
 	fi
 
-	make_wrapper "${PN}" "${DIR}/bin/pycharm"
+	make_wrapper "${PN}" "${DIR}/bin/pycharm.sh"
 	newicon "bin/${PN/%-*/}.png" "${PN}.png"
 	make_desktop_entry "${PN}" "${PN}" "${PN}"
 
